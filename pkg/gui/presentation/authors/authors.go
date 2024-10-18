@@ -19,12 +19,11 @@ type authorNameCacheKey struct {
 // if these being global variables causes trouble we can wrap them in a struct
 // attached to the gui state.
 var (
-	authorInitialCache = make(map[string]string)
-	authorNameCache    = make(map[authorNameCacheKey]string)
-	authorStyleCache   = make(map[string]style.TextStyle)
+	authorInitialCache      = make(map[string]string)
+	authorNameCache         = make(map[authorNameCacheKey]string)
+	authorStyleCache        = make(map[string]style.TextStyle)
+	unspecifiedAuthorColors = make([]style.TextStyle, 0)
 )
-
-const authorNameWildcard = "*"
 
 func ShortAuthor(authorName string) string {
 	if value, ok := authorInitialCache[authorName]; ok {
@@ -78,16 +77,19 @@ func AuthorStyle(authorName string) style.TextStyle {
 		return value
 	}
 
-	// use the unified style whatever the author name is
-	if value, ok := authorStyleCache[authorNameWildcard]; ok {
-		return value
-	}
-
-	value := trueColorStyle(authorName)
+	value := getNewColorStyle(authorName)
 
 	authorStyleCache[authorName] = value
 
 	return value
+}
+
+func getNewColorStyle(authorName string) style.TextStyle {
+	if len(unspecifiedAuthorColors) > 0 {
+		return unspecifiedAuthorColors[randInt([]byte(authorName), len(unspecifiedAuthorColors))]
+	} else {
+		return trueColorStyle(authorName)
+	}
 }
 
 func trueColorStyle(str string) style.TextStyle {
@@ -138,4 +140,8 @@ func getFirstRune(str string) rune {
 
 func SetCustomAuthors(customAuthorColors map[string]string) {
 	authorStyleCache = utils.SetCustomColors(customAuthorColors)
+}
+
+func SetUnspecifiedAuthorColors(customAuthorColors []string) {
+	unspecifiedAuthorColors = utils.GetStylesFromColorStrings(customAuthorColors)
 }

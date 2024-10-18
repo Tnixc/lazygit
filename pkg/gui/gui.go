@@ -708,7 +708,15 @@ func NewGui(
 	// storing this stuff on the gui for now to ease refactoring
 	// TODO: reset these controllers upon changing repos due to state changing
 	gui.c = helperCommon
-
+	userConfig := gui.UserConfig()
+	authors.SetUnspecifiedAuthorColors(userConfig.Gui.UnspecifiedAuthorColors)
+	authors.SetCustomAuthors(userConfig.Gui.AuthorColors)
+	if userConfig.Gui.NerdFontsVersion != "" {
+	    icons.SetNerdFontsVersion(userConfig.Gui.NerdFontsVersion)
+	} else if userConfig.Gui.ShowIcons {
+	    icons.SetNerdFontsVersion("2")
+	}
+	presentation.SetCustomBranches(userConfig.Gui.BranchColors)
 	gui.BackgroundRoutineMgr = &BackgroundRoutineMgr{gui: gui}
 	gui.stateAccessor = &StateAccessor{gui: gui}
 

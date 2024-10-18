@@ -341,3 +341,4 @@ gopkg.in/warnings.v0
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
+# github.com/jesseduffield/lazygit/pkg/config => ./pkg/config
