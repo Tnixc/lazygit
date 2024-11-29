@@ -167,6 +167,8 @@ type GuiConfig struct {
 	SwitchToFilesAfterStashPop bool `yaml:"switchToFilesAfterStashPop"`
 	// If true, jump to the Files panel after applying a stash
 	SwitchToFilesAfterStashApply bool `yaml:"switchToFilesAfterStashApply"`
+	// If true, when using the panel jump keys (default 1 through 5) and target panel is already active, go to next tab instead
+	SwitchTabsWithPanelJumpKeys bool `yaml:"switchTabsWithPanelJumpKeys"`
 }
 
 func (c *GuiConfig) UseFuzzySearch() bool {
@@ -738,6 +740,7 @@ func GetDefaultConfig() *UserConfig {
 			StatusPanelView:              "dashboard",
 			SwitchToFilesAfterStashPop:   true,
 			SwitchToFilesAfterStashApply: true,
+			SwitchTabsWithPanelJumpKeys:  false,
 		},
 		Git: GitConfig{
 			Paging: PagingConfig{
